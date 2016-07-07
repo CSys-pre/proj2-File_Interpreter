@@ -16,7 +16,8 @@ void Stack_init();
 Stack_Node* Stack_create_node();
 void Stack_push_node( Stack_Node* node );
 void Stack_push_data( char data );
-Stack_Node* Stack_pop();
+Stack_Node* Stack_pop_node();
+char Stack_pop_data();
 
 // acts like destructor
 void Stack_clean();

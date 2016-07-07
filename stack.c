@@ -41,6 +41,28 @@ void Stack_push_data( char data )
     Stack_push_node( node );
 }
 
+Stack_Node* Stack_pop_node()
+{
+    Stack_Node* node = end_node;
+
+    // update pointers to remove the node from the stack
+    end_node = node->previous;
+    end_node->next = NULL;
+
+    return node;
+}
+
+char Stack_pop_data()
+{
+    Stack_Node* node = Stack_pop_node();
+    char data = node->data;
+
+    // free the node memory
+    free(node);
+
+    return data;
+}
+
 // acts like destructor
 void Stack_clean()
 {
