@@ -15,6 +15,7 @@ void Stack_init()
 Stack_Node* Stack_create_node()
 {
     Stack_Node* node = malloc( sizeof(Stack_Node) );
+    node->previous = NULL;
     node->next = NULL;
 
     return node;
@@ -22,10 +23,14 @@ Stack_Node* Stack_create_node()
 
 void Stack_push_node( Stack_Node* node )
 {
-    // handle start and end pointers
+    // handle start pointer
     if( start_node == NULL )
         start_node = node;
 
+    // prevoius -> previous node, next -> NULL
+    node->previous = end_node;
+
+    // update end pointer
     end_node = node;
 }
 
