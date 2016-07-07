@@ -13,7 +13,8 @@ typedef struct Stack_Node {
 void Stack_init();
 
 Stack_Node* Stack_create_node();
-void Stack_push( Stack_Node* node );
+void Stack_push_node( Stack_Node* node );
+void Stack_push_data( char data );
 Stack_Node* Stack_pop();
 
 // acts like destructor
