@@ -7,6 +7,7 @@
 typedef struct Stack_Node {
     char data;
     struct Stack_Node* next;
+    struct Stack_Node* previous;
 } Stack_Node;
 
 // acts like constructor
