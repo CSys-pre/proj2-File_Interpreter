@@ -33,12 +33,17 @@ Stack_Node* Stack_create_node()
 
 void Stack_push_node( Stack* stack, Stack_Node* node )
 {
+
     // handle start pointer
     if( stack->start_node == NULL )
         stack->start_node = node;
 
-    // prevoius -> previous node, next -> NULL
-    node->previous = stack->end_node;
+    else
+    {
+        // prevoius -> previous node, next -> NULL
+        node->previous = stack->end_node;
+        stack->end_node->next = node;
+    }
 
     // update end pointer
     stack->end_node = node;
