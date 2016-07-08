@@ -87,7 +87,8 @@ char Stack_pop_data(Stack* stack)
 
     // check if there is no nodes left
     if( node == NULL )
-        return NULL;
+        // return null
+        return (char)(0);
 
     char data = node->data;
 
