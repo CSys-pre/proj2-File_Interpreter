@@ -10,16 +10,18 @@ typedef struct Stack_Node {
     struct Stack_Node* previous;
 } Stack_Node;
 
-// acts like constructor
-void Stack_init();
+typedef struct Stack Stack;
+
+Stack* Stack_new();
 
 Stack_Node* Stack_create_node();
-void Stack_push_node( Stack_Node* node );
-void Stack_push_data( char data );
-Stack_Node* Stack_pop_node();
-char Stack_pop_data();
 
-// acts like destructor
-void Stack_clean();
+void Stack_push_node( Stack* stack, Stack_Node* node );
+void Stack_push_data( Stack* stack, char data );
+
+Stack_Node* Stack_pop_node(Stack* stack);
+char Stack_pop_data(Stack* stack);
+
+void Stack_clean(Stack* stack);
 
 #endif // STACK_H
