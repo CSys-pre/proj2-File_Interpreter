@@ -58,6 +58,7 @@ void Stack_push_data( Stack* stack, char data )
 
 Stack_Node* Stack_pop_node(Stack* stack)
 {
+    // check if there is no nodes left
     if( stack->end_node == NULL )
     {
         fprintf(stderr, "Empty Stack\n");
