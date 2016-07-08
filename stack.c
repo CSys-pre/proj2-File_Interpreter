@@ -101,5 +101,27 @@ char Stack_pop_data(Stack* stack)
 // acts like destructor
 void Stack_clean( Stack* stack )
 {
+    // if no nodes at all
+    if( stack->start_node == NULL ) return;
 
+    // if only one node
+    else if( stack->start_node == stack->end_node )
+    {
+        free( stack->start_node );
+    }
+
+    // if there is more than one node
+    else
+    {
+        Stack_Node* current_node = stack->start_node->next;
+
+        while (current_node != NULL)
+        {
+            // free
+            free(current_node->previous);
+
+            // go next
+            current_node = current_node->next;
+        }
+    }
 }
