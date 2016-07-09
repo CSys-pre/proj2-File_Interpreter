@@ -98,6 +98,15 @@ char Stack_pop_data(Stack* stack)
     return data;
 }
 
+bool Stack_is_empty( Stack* stack )
+{
+    if( stack->start_node == NULL )
+        return true;
+
+    else
+        return false;
+}
+
 // acts like destructor
 void Stack_clean( Stack* stack )
 {

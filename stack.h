@@ -4,6 +4,14 @@
 /* this an implementation of simple Stack in C
  */
 
+#include "stdint.h"
+
+#ifndef __cplusplus
+typedef uint8_t bool;
+#define true  0
+#define false 1
+#endif
+
 // the nodes that occupy stack(s)
 typedef struct Stack_Node {
     char data;
@@ -28,6 +36,8 @@ void Stack_push_data( Stack* stack, char data );
 // pop node/data
 Stack_Node* Stack_pop_node(Stack* stack);
 char Stack_pop_data(Stack* stack);
+
+bool Stack_is_empty( Stack* stack );
 
 // clean up
 void Stack_clean(Stack* stack);
