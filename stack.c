@@ -107,6 +107,11 @@ bool Stack_is_empty( Stack* stack )
         return false;
 }
 
+char Stack_get_last( Stack* stack )
+{
+    return stack->end_node->data;
+}
+
 // acts like destructor
 void Stack_clean( Stack* stack )
 {

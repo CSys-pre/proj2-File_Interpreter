@@ -39,6 +39,9 @@ char Stack_pop_data(Stack* stack);
 
 bool Stack_is_empty( Stack* stack );
 
+// get value of last node
+char Stack_get_last( Stack* stack );
+
 // clean up
 void Stack_clean(Stack* stack);
 
