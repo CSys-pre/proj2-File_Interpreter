@@ -78,6 +78,10 @@ Stack_Node* Stack_pop_node(Stack* stack)
     if( node->previous != NULL )
         stack->end_node->next = NULL;
 
+    // update start_node if this is the last node to pop up
+    if( stack->end_node == NULL )
+        stack->start_node = NULL;
+
     return node;
 }
 
