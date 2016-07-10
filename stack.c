@@ -12,7 +12,6 @@ static void Stack_push_node( Stack* stack, Stack_Node* node );
 static Stack_Node* Stack_pop_node(Stack* stack);
 
 typedef struct Stack_Node {
-//    char data;
     struct Stack_Node* next;
     struct Stack_Node* previous;
     uint32_t data;
@@ -157,7 +156,12 @@ bool Stack_is_empty( Stack* stack )
         return false;
 }
 
-char Stack_get_last( Stack* stack )
+char Stack_get_last_char( Stack* stack )
+{
+    return (char)stack->end_node->data;
+}
+
+uint32_t Stack_get_last_uint32( Stack* stack )
 {
     return stack->end_node->data;
 }
@@ -188,4 +192,7 @@ void Stack_clean( Stack* stack )
             current_node = current_node->next;
         }
     }
+
+    // free stack
+    free(stack);
 }
