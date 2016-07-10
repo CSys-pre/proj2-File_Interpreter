@@ -67,7 +67,7 @@ uint32_t string_to_integer( const char* str )
     return integer;
 }
 
-const char* ITP_convert( const char* infix )
+char* ITP_convert( const char* infix )
 {
     // to get sure that
     assert( ASCII != NULL );
@@ -84,7 +84,13 @@ const char* ITP_convert( const char* infix )
 
 uint32_t ITP_convert_inner(const char *infix, char* postfix )
 {
-    size_t len = strlen(infix);
+    size_t len;
+
+    if( strcmp(infix,  "" ) != 0 )
+        len = strlen(infix);
+
+    else
+        return 0;
 
     bool is_operand = false;
 
@@ -111,7 +117,7 @@ uint32_t ITP_convert_inner(const char *infix, char* postfix )
         {
             if( Stack_is_empty(stack) == false )
             {
-                uint8_t stack_last_element_priority = ASCII[(uint8_t)Stack_get_last(stack)];
+                uint8_t stack_last_element_priority = ASCII[(uint8_t)Stack_get_last_char(stack)];
                 uint8_t current_operand_priority    = ASCII[(uint8_t)infix[iii]];
 
                 if( infix[iii] == '(' )
@@ -134,6 +140,9 @@ uint32_t ITP_convert_inner(const char *infix, char* postfix )
                     // the data between `()` is calculated as a new infix
                     // update the postfix_index
                     postfix_index += ITP_convert_inner( sub_infix, &postfix[postfix_index] );
+
+                    free(sub_infix);
+
                     continue;
                 }
 
@@ -145,15 +154,15 @@ uint32_t ITP_convert_inner(const char *infix, char* postfix )
                     // add space after each operand poped out from the stack
                     postfix[postfix_index++] = ' ';
                     // push operator
-                    postfix[postfix_index++] = Stack_pop_data( stack );
+                    postfix[postfix_index++] = Stack_pop_char( stack );
 
-                    stack_last_element_priority = ASCII[(uint8_t)Stack_get_last(stack)];
+                    stack_last_element_priority = ASCII[(uint8_t)Stack_get_last_char(stack)];
                     current_operand_priority    = ASCII[(uint8_t)infix[iii]];
                 }
             }
 
             // push operator
-            Stack_push_data(stack, infix[iii]);
+            Stack_push_char(stack, infix[iii]);
 
             // add space after each operand
             postfix[postfix_index++] = ' ';
@@ -165,11 +174,17 @@ uint32_t ITP_convert_inner(const char *infix, char* postfix )
     while( Stack_is_empty(stack) == false )
     {
         // push operator
-        postfix[postfix_index++] = Stack_pop_data( stack );
+        postfix[postfix_index++] = Stack_pop_char( stack );
 
         // add space after each operand still needed to be poped out
         postfix[postfix_index++] = ' ';
     }
 
     return postfix_index;
+}
+
+void ITP_clean()
+{
+    // clean the ascii table
+    free((char *)ASCII);
 }

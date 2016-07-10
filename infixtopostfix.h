@@ -7,6 +7,8 @@
 void ITP_init();
 
 // convert from infix to postfix
-const char* ITP_convert( const char* infix );
+char* ITP_convert( const char* infix );
+
+void ITP_clean();
 
 #endif // INFIXTOPOSTFIX_H
