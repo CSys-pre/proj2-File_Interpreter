@@ -13,11 +13,7 @@ typedef uint8_t bool;
 #endif
 
 // the nodes that occupy stack(s)
-typedef struct Stack_Node {
-    char data;
-    struct Stack_Node* next;
-    struct Stack_Node* previous;
-} Stack_Node;
+typedef struct Stack_Node Stack_Node;
 
 // struct that represent Stack
 // it's body is hidden to secure data
@@ -29,18 +25,19 @@ Stack* Stack_new();
 // create new node in stack
 Stack_Node* Stack_create_node();
 
-// push node/data
-void Stack_push_node( Stack* stack, Stack_Node* node );
-void Stack_push_data( Stack* stack, char data );
+// push data
+void Stack_push_char( Stack* stack, char data );
+void Stack_push_uint32( Stack* stack, uint32_t data );
 
-// pop node/data
-Stack_Node* Stack_pop_node(Stack* stack);
-char Stack_pop_data(Stack* stack);
+// pop data
+char Stack_pop_char(Stack* stack);
+uint32_t Stack_pop_uint32(Stack* stack);
 
 bool Stack_is_empty( Stack* stack );
 
 // get value of last node
-char Stack_get_last( Stack* stack );
+char Stack_get_last_char( Stack* stack );
+uint32_t Stack_get_last_uint32( Stack* stack );
 
 // clean up
 void Stack_clean(Stack* stack);

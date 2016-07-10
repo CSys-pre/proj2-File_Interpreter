@@ -6,6 +6,18 @@
 //static Stack_Node* start_node;
 //static Stack_Node* end_node;
 
+// push node
+static void Stack_push_node( Stack* stack, Stack_Node* node );
+// pop node
+static Stack_Node* Stack_pop_node(Stack* stack);
+
+typedef struct Stack_Node {
+//    char data;
+    struct Stack_Node* next;
+    struct Stack_Node* previous;
+    uint32_t data;
+} Stack_Node;
+
 struct Stack{
     Stack_Node* start_node;
     Stack_Node* end_node;
@@ -49,7 +61,19 @@ void Stack_push_node( Stack* stack, Stack_Node* node )
     stack->end_node = node;
 }
 
-void Stack_push_data( Stack* stack, char data )
+void Stack_push_char( Stack* stack, char data )
+{
+    // create new node
+    Stack_Node* node = Stack_create_node();
+
+    // append data
+    node->data = (int32_t)data;
+
+    // push the new node
+    Stack_push_node( stack, node );
+}
+
+void Stack_push_uint32( Stack* stack, uint32_t data )
 {
     // create new node
     Stack_Node* node = Stack_create_node();
@@ -66,7 +90,12 @@ Stack_Node* Stack_pop_node(Stack* stack)
     // check if there is no nodes left
     if( stack->end_node == NULL )
     {
-        fprintf(stderr, "Empty Stack\n");
+        // if define __DEBUG__ and this error happen
+        // it well print this error
+        #ifdef __DEBUG__
+            fprintf(stderr, "Empty Stack\n");
+        #endif
+
         return NULL;
     }
 
@@ -85,7 +114,7 @@ Stack_Node* Stack_pop_node(Stack* stack)
     return node;
 }
 
-char Stack_pop_data(Stack* stack)
+char Stack_pop_char(Stack* stack)
 {
     Stack_Node* node = Stack_pop_node( stack );
 
@@ -94,7 +123,24 @@ char Stack_pop_data(Stack* stack)
         // return null
         return (char)(0);
 
-    char data = node->data;
+    char data = (uint32_t)(node->data);
+
+    // free the node memory
+    free(node);
+
+    return data;
+}
+
+uint32_t Stack_pop_uint32(Stack* stack)
+{
+    Stack_Node* node = Stack_pop_node( stack );
+
+    // check if there is no nodes left
+    if( node == NULL )
+        // return null
+        return (char)(0);
+
+    uint32_t data = node->data;
 
     // free the node memory
     free(node);
