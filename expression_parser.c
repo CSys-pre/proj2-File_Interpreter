@@ -1,17 +1,19 @@
-#include "infixtopostfix.h"
+#include "expression_parser.h"
 #include "stack.h"
 
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
+#define MAX_POSTFIX_SIZE 100
+
 static uint32_t string_to_integer( const char* str );
-static uint32_t ITP_convert_inner(const char *infix, char* postfix );
+static uint32_t ExpressionParser_infix_to_postfix_inner(const char *infix, char* postfix );
 
 static const int8_t* ASCII = NULL;
 static const uint16_t ASCII_LEN = 256;
 
-void ITP_init()
+void ExpressionParser_init()
 {
     // to make sure that this function called once
     if( ASCII != NULL )
@@ -67,14 +69,14 @@ uint32_t string_to_integer( const char* str )
     return integer;
 }
 
-char* ITP_convert( const char* infix )
+char* ExpressionParser_infix_to_postfix( const char* infix )
 {
     // to get sure that
     assert( ASCII != NULL );
 
-    char *postfix = malloc(100 * sizeof(char));
+    char *postfix = malloc(MAX_POSTFIX_SIZE * sizeof(char));
 
-    size_t postfix_index = ITP_convert_inner( infix, postfix );
+    size_t postfix_index = ExpressionParser_infix_to_postfix_inner( infix, postfix );
 
     // add the NULL termianal to the end of the postfix
     postfix[postfix_index] = '\0';
@@ -82,7 +84,7 @@ char* ITP_convert( const char* infix )
     return postfix;
 }
 
-uint32_t ITP_convert_inner(const char *infix, char* postfix )
+uint32_t ExpressionParser_infix_to_postfix_inner(const char *infix, char* postfix )
 {
     size_t len;
 
@@ -120,9 +122,10 @@ uint32_t ITP_convert_inner(const char *infix, char* postfix )
                 uint8_t stack_last_element_priority = ASCII[(uint8_t)Stack_get_last_char(stack)];
                 uint8_t current_operand_priority    = ASCII[(uint8_t)infix[iii]];
 
+                // handle inner infix - the one between `()`
                 if( infix[iii] == '(' )
                 {
-                    char *sub_infix = malloc( 100 * sizeof(char) );
+                    char *sub_infix = malloc( MAX_POSTFIX_SIZE * sizeof(char) );
                     uint32_t index = 0;
 
                     // ignore '('
@@ -139,7 +142,7 @@ uint32_t ITP_convert_inner(const char *infix, char* postfix )
 
                     // the data between `()` is calculated as a new infix
                     // update the postfix_index
-                    postfix_index += ITP_convert_inner( sub_infix, &postfix[postfix_index] );
+                    postfix_index += ExpressionParser_infix_to_postfix_inner( sub_infix, &postfix[postfix_index] );
 
                     free(sub_infix);
 
@@ -183,7 +186,7 @@ uint32_t ITP_convert_inner(const char *infix, char* postfix )
     return postfix_index;
 }
 
-void ITP_clean()
+void ExpressionParser_clean()
 {
     // clean the ascii table
     free((char *)ASCII);
