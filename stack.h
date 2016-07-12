@@ -5,6 +5,9 @@
  * 2- push data using either `Stack_push_char` or `Stack_push_uint32` but not both.
  * 3- pop data using either `Stack_pop_char` or `Stack_pop_uint32` but not both.
  * 4- call Stack_clean to clean the created stack(s)
+ *
+ * NOTE: there is a macro called __DEBUG__ that can be called to show more
+ * verbose messages
  */
 
 #ifndef STACK_H

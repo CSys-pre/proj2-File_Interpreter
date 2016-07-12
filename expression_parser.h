@@ -5,6 +5,9 @@
  * 1- call ExpressionParser_init once to initiate the library
  * 2- call ExpressionParser_infix_to_postfix OR ExpressionParser_parse
  * 3- call ExpressionParser_clean to clean the library
+ *
+ * NOTE: there is a macro called __DEBUG__ that can be called to show more
+ * verbose messages
  */
 
 #ifndef EXPRESSION_PARSER_H
