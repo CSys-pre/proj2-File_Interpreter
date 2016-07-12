@@ -11,14 +11,18 @@ static uint32_t string_to_integer( const char* str, size_t len );
 static uint32_t ExpressionParser_infix_to_postfix_inner(const char *infix, char* postfix );
 static char* remove_spaces( char* str );
 static bool check_initation();
+//TODO: create a function to validate the input infix
 
 static uint32_t __add( uint32_t num1, uint32_t num2 );
 static uint32_t __sub( uint32_t num1, uint32_t num2 );
 static uint32_t __mul( uint32_t num1, uint32_t num2 );
 static uint32_t __div( uint32_t num1, uint32_t num2 );
 static uint32_t __mod( uint32_t num1, uint32_t num2 );
+
+// TODO: These two functions is not working
 static uint32_t __shift_left( uint32_t num1, uint32_t num2 );
 static uint32_t __shift_right( uint32_t num1, uint32_t num2 );
+
 static uint32_t __and( uint32_t num1, uint32_t num2 );
 static uint32_t __or( uint32_t num1, uint32_t num2 );
 static uint32_t __xor( uint32_t num1, uint32_t num2 );
@@ -136,16 +140,16 @@ uint32_t ExpressionParser_infix_to_postfix_inner(const char *infix, char* postfi
 
     uint32_t postfix_index = 0;
 
-    uint32_t index = 0;
+    uint32_t infix_index = 0;
 
-    while ( index < len )
+    while ( infix_index < len )
     {
         // Operand
-        if( infix[index] >= '0' && infix[index] <= '9' )
+        if( infix[infix_index] >= '0' && infix[infix_index] <= '9' )
         {
-            while( infix[index] >= '0' && infix[index] <= '9' )
+            while( infix[infix_index] >= '0' && infix[infix_index] <= '9' )
             {
-                postfix[postfix_index++] = infix[index++];
+                postfix[postfix_index++] = infix[infix_index++];
             }
 
             postfix[postfix_index++] = ' ';
@@ -157,25 +161,25 @@ uint32_t ExpressionParser_infix_to_postfix_inner(const char *infix, char* postfi
             if( Stack_is_empty(stack) == false )
             {
                 uint8_t stack_last_element_priority = ASCII_PRI[(uint8_t)Stack_get_last_char(stack)];
-                uint8_t current_operand_priority    = ASCII_PRI[(uint8_t)infix[index]];
+                uint8_t current_operand_priority    = ASCII_PRI[(uint8_t)infix[infix_index]];
 
                 // handle inner infix - the one between `()`
-                if( infix[index] == '(' )
+                if( infix[infix_index] == '(' )
                 {
                     char *sub_infix = malloc( MAX_POSTFIX_SIZE * sizeof(char) );
-                    uint32_t index2 = 0;
+                    uint32_t sub_infix_index = 0;
 
                     // ignore '('
-                    index++;
+                    infix_index++;
 
                     // gather the data between the `()`
-                    while( infix[index] != ')' )
+                    while( infix[infix_index] != ')' )
                     {
-                        sub_infix[index2++] = infix[index++];
+                        sub_infix[sub_infix_index++] = infix[infix_index++];
                     }
 
                     // ignore ')'
-                    index++;
+                    infix_index++;
 
                     // the data between `()` is calculated as a new infix
                     // update the postfix_index
@@ -202,14 +206,14 @@ uint32_t ExpressionParser_infix_to_postfix_inner(const char *infix, char* postfi
                         break;
 
                     stack_last_element_priority = ASCII_PRI[(uint8_t)Stack_get_last_char(stack)];
-                    current_operand_priority    = ASCII_PRI[(uint8_t)infix[index]];
+                    current_operand_priority    = ASCII_PRI[(uint8_t)infix[infix_index]];
                 }
             }
 
             // push operator
-            Stack_push_char(stack, infix[index]);
+            Stack_push_char(stack, infix[infix_index]);
 
-            index++;
+            infix_index++;
         }
     }
 
@@ -244,19 +248,19 @@ uint32_t ExpressionParser_parse( const char* infix )
 
     Stack* stack = Stack_new();
 
-    uint32_t index = 0;
+    uint32_t postfix_index = 0;
 
     char* token;
     size_t token_len;
 
-    while ( index < postfix_len )
+    while ( postfix_index < postfix_len )
     {
-        token = &postfix[index];
+        token = &postfix[postfix_index];
         token_len = 0;
 
-        while( postfix[index] != ' ' && index != (postfix_len - 1) )
+        while( postfix[postfix_index] != ' ' && postfix_index != (postfix_len - 1) )
         {
-            index++;
+            postfix_index++;
             token_len++;
         }
 
@@ -279,7 +283,7 @@ uint32_t ExpressionParser_parse( const char* infix )
             Stack_push_uint32(stack, result);
         }
 
-        index++;
+        postfix_index++;
     }
 
     Stack_clean(stack);
