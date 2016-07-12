@@ -22,9 +22,6 @@ typedef struct Stack Stack;
 // create new stack
 Stack* Stack_new();
 
-// create new node in stack
-Stack_Node* Stack_create_node();
-
 // push data
 void Stack_push_char( Stack* stack, char data );
 void Stack_push_uint32( Stack* stack, uint32_t data );

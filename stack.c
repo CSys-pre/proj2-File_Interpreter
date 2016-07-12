@@ -6,6 +6,8 @@
 //static Stack_Node* start_node;
 //static Stack_Node* end_node;
 
+// create new node in stack
+static Stack_Node* Stack_create_node();
 // push node
 static void Stack_push_node( Stack* stack, Stack_Node* node );
 // pop node
